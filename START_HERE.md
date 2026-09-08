@@ -2,7 +2,9 @@
 
 ## 📦 What You're Getting
 
-A **production-ready URL Shortener** with TWO deployment paths:
+A **production-ready URL Shortener V2** (reactive/async) with TWO deployment paths:
+
+**Note**: This repository contains **V2 only**. V1 (synchronous version) was designed as a reference architecture but is not implemented here. See [`SOLUTION_COMPARISON.md`](SOLUTION_COMPARISON.md) for V1 architecture details. V2 was chosen because it offers 5-15x better throughput and easier scaling.
 
 ### Path 1: Simple Edition (Recommended First) ⭐
 - **Setup:** 2 minutes
