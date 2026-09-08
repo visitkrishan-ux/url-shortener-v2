@@ -53,6 +53,10 @@ public class ShortUrlController {
         return Mono.just(ResponseEntity.ok(Map.of("status", "UP")));
     }
 
+        @GetMapping("/favicon.ico")
+    public Mono<ResponseEntity<Void>> favicon() {
+        return Mono.just(ResponseEntity.noContent().build());
+    }
     @GetMapping("/{code}")
     public Mono<ResponseEntity<Object>> redirect(@PathVariable String code, ServerWebExchange exchange) {
         // Ignore reserved paths
