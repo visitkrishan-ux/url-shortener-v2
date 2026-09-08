@@ -1,0 +1,6 @@
+com\example\urlshortener\util\CodeGenerator.class
+com\example\urlshortener\repository\ShortUrlRepository.class
+com\example\urlshortener\service\ShortUrlService.class
+com\example\urlshortener\UrlShortenerV2Application.class
+com\example\urlshortener\controller\ShortUrlController.class
+com\example\urlshortener\model\ShortUrl.class

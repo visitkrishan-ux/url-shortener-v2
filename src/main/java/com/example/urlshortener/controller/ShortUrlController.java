@@ -21,23 +21,45 @@ public class ShortUrlController {
     }
 
     @PostMapping("/api/shorten")
-    public Mono<ResponseEntity<?>> shorten(@RequestBody Mono<Map<String, String>> bodyMono) {
+    public Mono<ResponseEntity<Object>> shorten(@RequestBody Mono<Map<String, String>> bodyMono) {
         return bodyMono.flatMap(body -> {
             String url = body.get("url");
             String custom = body.get("customAlias");
             
             if (url == null || url.isBlank()) {
-                return Mono.just(ResponseEntity.badRequest().body("Missing url"));
+                return Mono.just(ResponseEntity.badRequest()
+                        .body((Object) Map.of("error", "Missing required field: url")));
+            }
+            
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                return Mono.just(ResponseEntity.badRequest()
+                        .body((Object) Map.of("error", "URL must start with http:// or https://")));
             }
 
             return shortUrlService.createShortUrl(url, custom)
-                    .map(s -> ResponseEntity.ok(Map.of("code", s.getCode(), "url", s.getOriginalUrl())))
-                    .onErrorResume(e -> Mono.just(ResponseEntity.badRequest().body(e.getMessage())));
+                    .map(s -> ResponseEntity.ok((Object) Map.of(
+                            "code", s.getCode(),
+                            "url", s.getOriginalUrl(),
+                            "shortUrl", "http://localhost:8080/" + s.getCode(),
+                            "createdAt", s.getCreatedAt().toString()
+                    )))
+                    .onErrorResume(e -> Mono.just(ResponseEntity.badRequest()
+                            .body((Object) Map.of("error", e.getMessage()))));
         });
     }
 
+    @GetMapping("/health")
+    public Mono<ResponseEntity<Map<String, String>>> health() {
+        return Mono.just(ResponseEntity.ok(Map.of("status", "UP")));
+    }
+
     @GetMapping("/{code}")
-    public Mono<ResponseEntity<?>> redirect(@PathVariable String code, ServerWebExchange exchange) {
+    public Mono<ResponseEntity<Object>> redirect(@PathVariable String code, ServerWebExchange exchange) {
+        // Ignore reserved paths
+        if (code.equals("actuator")) {
+            return Mono.just(ResponseEntity.notFound().build());
+        }
+        
         return shortUrlService.getShortUrl(code)
                 .doOnNext(s -> shortUrlService.recordAnalytics(code).subscribe())
                 .map(s -> ResponseEntity.status(HttpStatus.FOUND)

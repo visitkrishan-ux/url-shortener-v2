@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 
 public interface ShortUrlRepository extends R2dbcRepository<ShortUrl, Long> {
     
-    @Query("SELECT * FROM short_urls WHERE code = :code")
+    @Query("SELECT * FROM short_url WHERE code = :code")
     Mono<ShortUrl> findByCode(@Param("code") String code);
 
-    @Query("SELECT EXISTS(SELECT 1 FROM short_urls WHERE code = :code)")
+    @Query("SELECT EXISTS(SELECT 1 FROM short_url WHERE code = :code)")
     Mono<Boolean> existsByCode(@Param("code") String code);
 }
