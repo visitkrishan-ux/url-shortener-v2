@@ -50,7 +50,7 @@ A **production-ready URL Shortener** with TWO deployment paths:
 
 ### I'm an Architect Reviewing This
 1. [`ARCHITECTURE.md`](ARCHITECTURE.md) - Design decisions & trade-offs
-2. Compare with [`V1_VS_V2_COMPARISON.md`](V1_VS_V2_COMPARISON.md) - Sync vs Reactive
+2. [`SOLUTION_COMPARISON.md`](SOLUTION_COMPARISON.md) - Alternative approaches vs this solution
 3. [`ADVANCED_SETUP.md`](ADVANCED_SETUP.md) - Resilience patterns & scalability
 
 ---
